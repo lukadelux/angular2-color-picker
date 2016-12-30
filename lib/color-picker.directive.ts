@@ -463,7 +463,7 @@ export class DialogComponent implements OnInit {
     }
 
     setDialogPosition() {
-        let dialogHeight = 292;
+        let dialogHeight = (this.cpPresetColors) ? 356 : 292;
         let node = this.directiveElementRef.nativeElement, position = 'static';
         let parentNode: any = null;
         while (node !== null && node.tagName !== 'HTML') {
