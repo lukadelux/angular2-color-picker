@@ -17,6 +17,7 @@ export class ColorPickerDirective implements OnInit, OnChanges {
     @Input('cpToggle') cpToggle: boolean;
     @Output('cpToggleChange') cpToggleChange = new EventEmitter<boolean>(true);
     @Input('cpPosition') cpPosition: string = 'right';
+    @Input('cpDisplayPosition') cpDisplayPosition: string = 'fixed';
     @Input('cpPositionOffset') cpPositionOffset: string = '0%';
     @Input('cpPositionRelativeToArrow') cpPositionRelativeToArrow: boolean = false;
     @Input('cpOutputFormat') cpOutputFormat: string = 'hex';
@@ -303,6 +304,7 @@ export class DialogComponent implements OnInit {
     private listenerResize: any;
 
     private cpPosition: string;
+    private cpDisplayPosition: string;
     private cpPositionOffset: number;
     private cpOutputFormat: string;
     private cpPresetLabel: string;
@@ -332,11 +334,11 @@ export class DialogComponent implements OnInit {
     constructor(private el: ElementRef, private service: ColorPickerService) { }
 
     setDialog(instance: any, elementRef: ElementRef, color: any, cpPosition: string, cpPositionOffset: string,
-        cpPositionRelativeToArrow: boolean, cpOutputFormat: string, cpPresetLabel: string, cpPresetColors: Array<string>,
-        cpCancelButton: boolean, cpCancelButtonClass: string, cpCancelButtonText: string,
-        cpOKButton: boolean, cpOKButtonClass: string, cpOKButtonText: string,
-        cpHeight: string, cpWidth: string,
-        cpIgnoredElements: any, cpDialogDisplay: string, cpSaveClickOutside: boolean, cpAlphaChannel: string) {
+              cpPositionRelativeToArrow: boolean, cpOutputFormat: string, cpPresetLabel: string, cpPresetColors: Array<string>,
+              cpCancelButton: boolean, cpCancelButtonClass: string, cpCancelButtonText: string,
+              cpOKButton: boolean, cpOKButtonClass: string, cpOKButtonText: string,
+              cpHeight: string, cpWidth: string,
+              cpIgnoredElements: any, cpDialogDisplay: string, cpSaveClickOutside: boolean, cpAlphaChannel: string) {
         this.directiveInstance = instance;
         this.initialColor = color;
         this.directiveElementRef = elementRef;
@@ -461,7 +463,7 @@ export class DialogComponent implements OnInit {
     }
 
     setDialogPosition() {
-        let dialogHeight = this.dialogElement.nativeElement.offsetHeight;
+        let dialogHeight = 292;
         let node = this.directiveElementRef.nativeElement, position = 'static';
         let parentNode: any = null;
         while (node !== null && node.tagName !== 'HTML') {
@@ -487,11 +489,20 @@ export class DialogComponent implements OnInit {
             this.position = 'fixed';
         }
         if (this.cpPosition === 'left') {
-            this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;
-            this.left -= this.cpWidth + this.dialogArrowSize - 2;
+            if(this.cpDisplayPosition === 'fixed') {
+                this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;
+                this.left -= this.cpWidth + this.dialogArrowSize - 2;
+            }
         } else if (this.cpPosition === 'top') {
-            this.top -= dialogHeight + this.dialogArrowSize;
-            this.left += this.cpPositionOffset / 100 * boxDirective.width - this.dialogArrowOffset;
+            //custom
+            if(this.cpDisplayPosition === 'fixed') {
+                this.top -= dialogHeight + this.dialogArrowSize;
+                this.left += this.cpPositionOffset / 100 * boxDirective.width - this.dialogArrowOffset;
+            } else {
+                this.top = -dialogHeight + 18;
+                this.left = 0;
+                this.position = "absolute";
+            }
             this.arrowTop = dialogHeight - 1;
         } else if (this.cpPosition === 'bottom') {
             this.top += boxDirective.height + this.dialogArrowSize;
