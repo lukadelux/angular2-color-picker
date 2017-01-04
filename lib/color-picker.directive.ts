@@ -81,10 +81,10 @@ export class ColorPickerDirective implements OnInit, OnChanges {
         if (!this.created) {
             this.created = true;
             this.compiler.compileModuleAndAllComponentsAsync(DynamicCpModule)
-                .then((factory: any) => {
+                .then(factory => {
                     const compFactory = factory.componentFactories.find(x => x.componentType === DialogComponent);
                     const injector = ReflectiveInjector.fromResolvedProviders([], this.vcRef.parentInjector);
-                    const cmpRef: any = this.vcRef.createComponent(compFactory, 0, injector, []);
+                    const cmpRef = this.vcRef.createComponent(compFactory, 0, injector, []);
                     cmpRef.instance.setDialog(this, this.el, this.colorPicker, this.cpPosition, this.cpPositionOffset,
                         this.cpPositionRelativeToArrow, this.cpOutputFormat, this.cpPresetLabel, this.cpPresetColors,
                         this.cpCancelButton, this.cpCancelButtonClass, this.cpCancelButtonText,
