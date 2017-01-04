@@ -17,7 +17,6 @@ export class ColorPickerDirective implements OnInit, OnChanges {
     @Input('cpToggle') cpToggle: boolean;
     @Output('cpToggleChange') cpToggleChange = new EventEmitter<boolean>(true);
     @Input('cpPosition') cpPosition: string = 'right';
-    @Input('cpDisplayPosition') cpDisplayPosition: string = 'fixed';
     @Input('cpPositionOffset') cpPositionOffset: string = '0%';
     @Input('cpPositionRelativeToArrow') cpPositionRelativeToArrow: boolean = false;
     @Input('cpOutputFormat') cpOutputFormat: string = 'hex';
@@ -81,10 +80,10 @@ export class ColorPickerDirective implements OnInit, OnChanges {
         if (!this.created) {
             this.created = true;
             this.compiler.compileModuleAndAllComponentsAsync(DynamicCpModule)
-                .then(factory => {
+                .then((factory: any) => {
                     const compFactory = factory.componentFactories.find(x => x.componentType === DialogComponent);
                     const injector = ReflectiveInjector.fromResolvedProviders([], this.vcRef.parentInjector);
-                    const cmpRef = this.vcRef.createComponent(compFactory, 0, injector, []);
+                    const cmpRef: any = this.vcRef.createComponent(compFactory, 0, injector, []);
                     cmpRef.instance.setDialog(this, this.el, this.colorPicker, this.cpPosition, this.cpPositionOffset,
                         this.cpPositionRelativeToArrow, this.cpOutputFormat, this.cpPresetLabel, this.cpPresetColors,
                         this.cpCancelButton, this.cpCancelButtonClass, this.cpCancelButtonText,
@@ -304,7 +303,6 @@ export class DialogComponent implements OnInit {
     private listenerResize: any;
 
     private cpPosition: string;
-    private cpDisplayPosition: string;
     private cpPositionOffset: number;
     private cpOutputFormat: string;
     private cpPresetLabel: string;
@@ -463,7 +461,7 @@ export class DialogComponent implements OnInit {
     }
 
     setDialogPosition() {
-        let dialogHeight = (this.cpPresetColors) ? 356 : 292;
+        let dialogHeight = this.dialogElement.nativeElement.offsetHeight;
         let node = this.directiveElementRef.nativeElement, position = 'static';
         let parentNode: any = null;
         while (node !== null && node.tagName !== 'HTML') {
@@ -489,20 +487,11 @@ export class DialogComponent implements OnInit {
             this.position = 'fixed';
         }
         if (this.cpPosition === 'left') {
-            if(this.cpDisplayPosition === 'fixed') {
-                this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;
-                this.left -= this.cpWidth + this.dialogArrowSize - 2;
-            }
+            this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;
+            this.left -= this.cpWidth + this.dialogArrowSize - 2;
         } else if (this.cpPosition === 'top') {
-            //custom
-            if(this.cpDisplayPosition === 'fixed') {
-                this.top -= dialogHeight + this.dialogArrowSize;
-                this.left += this.cpPositionOffset / 100 * boxDirective.width - this.dialogArrowOffset;
-            } else {
-                this.top = -dialogHeight + 18;
-                this.left = 0;
-                this.position = "absolute";
-            }
+            this.top -= dialogHeight + this.dialogArrowSize;
+            this.left += this.cpPositionOffset / 100 * boxDirective.width - this.dialogArrowOffset;
             this.arrowTop = dialogHeight - 1;
         } else if (this.cpPosition === 'bottom') {
             this.top += boxDirective.height + this.dialogArrowSize;

@@ -256,11 +256,11 @@ export class DialogComponent implements OnInit {
     constructor(private el: ElementRef, private service: ColorPickerService) { }
 
     setDialog(instance: any, elementRef: ElementRef, color: any, cpPosition: string, cpPositionOffset: string,
-        cpPositionRelativeToArrow: boolean, cpOutputFormat: string, cpPresetLabel: string, cpPresetColors: Array<string>,
-        cpCancelButton: boolean, cpCancelButtonClass: string, cpCancelButtonText: string,
-        cpOKButton: boolean, cpOKButtonClass: string, cpOKButtonText: string,
-        cpHeight: string, cpWidth: string,
-        cpIgnoredElements: any, cpDialogDisplay: string, cpSaveClickOutside: boolean, cpAlphaChannel: string) {
+              cpPositionRelativeToArrow: boolean, cpOutputFormat: string, cpPresetLabel: string, cpPresetColors: Array<string>,
+              cpCancelButton: boolean, cpCancelButtonClass: string, cpCancelButtonText: string,
+              cpOKButton: boolean, cpOKButtonClass: string, cpOKButtonText: string,
+              cpHeight: string, cpWidth: string,
+              cpIgnoredElements: any, cpDialogDisplay: string, cpSaveClickOutside: boolean, cpAlphaChannel: string) {
         this.directiveInstance = instance;
         this.initialColor = color;
         this.directiveElementRef = elementRef;
