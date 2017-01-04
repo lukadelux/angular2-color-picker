@@ -155,7 +155,7 @@ export class SliderDirective {
     }
 
     setCursor(event: any) {
-        let height = this.el.nativeElement.offsetHeight;
+        let dialogHeight = (this.cpPresetColors) ? 356 : 292;
         let width = this.el.nativeElement.offsetWidth;
         let x = Math.max(0, Math.min(this.getX(event), width));
         let y = Math.max(0, Math.min(this.getY(event), height));
